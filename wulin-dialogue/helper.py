@@ -11,6 +11,11 @@ Usage:
                                         relevance-scored pool, so repeated calls
                                         give variety. Pass an integer seed for a
                                         reproducible pick.
+  helper.py pool "<prompt>" [n]         Print top-n (default 12) oracle-scored
+                                        candidates without picking. Use when you
+                                        want to choose among broader interpretations
+                                        (direct answer / extension / restatement /
+                                        vibes-match) instead of a single random pick.
   helper.py next <idx> [n]              Show line at idx and next n lines (default n=3).
   helper.py around <idx> [n]            Show n lines before and after idx (default n=3).
   helper.py char <name> [keyword]       Dump lines for character; optional keyword filter.
@@ -129,18 +134,15 @@ ORACLE_MIN_LEN = 5
 ORACLE_POOL_CAP = 60
 
 
-def oracle(prompt, seed=None):
-    """Pick ONE line from the entire script as a 'book of answers' reply.
-
-    Scoring per candidate: relevance × length-boost × tier-weight.
-    - tier-weight: EXACT=8, SUBSTR=5, FUZZY=fuzzy_score_normalized
+def _oracle_candidates(prompt):
+    """Return a list of (weight, entry) sorted by descending weight, using
+    relevance × length-boost × tier-weight scoring.
+    - tier-weight: EXACT=8, SUBSTR=5, FUZZY=fuzzy_score_normalized to 0..1
     - length-boost: log10(len)+1, so 30-char金句 beats 5-char短句 ~2×
-    Then pick by weighted random so the same prompt gives variety on re-asks.
+    Filler lines (< ORACLE_MIN_LEN) are dropped.
     """
-    rng = random.Random(seed)
     exact, sub, fuzzy_scored = _search(prompt)
-
-    candidates = []  # list of (weight, entry)
+    candidates = []
     for e in exact:
         if len(e['t']) >= ORACLE_MIN_LEN:
             candidates.append((8.0 * (math.log10(len(e['t'])) + 1), e))
@@ -151,20 +153,42 @@ def oracle(prompt, seed=None):
         max_fz = max(s for s, _ in fuzzy_scored) or 1
         for score, e in fuzzy_scored[:ORACLE_POOL_CAP]:
             if len(e['t']) >= ORACLE_MIN_LEN:
-                norm = score / max_fz  # 0..1
+                norm = score / max_fz
                 candidates.append((norm * (math.log10(len(e['t'])) + 1), e))
+    candidates.sort(key=lambda x: -x[0])
+    return candidates
 
+
+def oracle(prompt, seed=None):
+    """Pick ONE line from the entire script as a 'book of answers' reply.
+    Weighted random over the scored candidate pool, so the same prompt yields
+    different draws across calls. Falls back to a random金句-length line when
+    no semantic match exists.
+    """
+    rng = random.Random(seed)
+    candidates = _oracle_candidates(prompt)
     if not candidates:
-        # No semantic match at all — fall back to a uniformly random金句-length line
-        # from the whole corpus, so the oracle never refuses to answer.
         all_ = load_all()
         long_lines = [e for e in all_ if 12 <= len(e['t']) <= 80]
         chosen = rng.choice(long_lines) if long_lines else rng.choice(all_)
     else:
         weights = [w for w, _ in candidates]
         chosen = rng.choices([e for _, e in candidates], weights=weights, k=1)[0]
-
     print(f"[{chosen['i']}] {chosen['c']}：{chosen['t']}")
+
+
+def pool(prompt, n=12):
+    """Print the top-N oracle-scored candidates without picking one. Lets the
+    caller (typically the LLM running the skill) read multiple options and
+    choose based on broader semantic interpretation — direct answer,
+    extension of the topic, restatement, or vibes-match.
+    """
+    candidates = _oracle_candidates(prompt)
+    if not candidates:
+        print(f"(no candidates for {prompt!r})")
+        return
+    for _, e in candidates[:n]:
+        print(f"[{e['i']}] {e['c']}：{e['t']}")
 
 def show_next(idx, n=3):
     all_ = load_all()
@@ -212,6 +236,9 @@ def main():
     elif cmd == 'oracle':
         seed = int(sys.argv[3]) if len(sys.argv) > 3 else None
         oracle(sys.argv[2], seed)
+    elif cmd == 'pool':
+        n = int(sys.argv[3]) if len(sys.argv) > 3 else 12
+        pool(sys.argv[2], n)
     elif cmd == 'next':
         show_next(sys.argv[2], int(sys.argv[3]) if len(sys.argv) > 3 else 3)
     elif cmd == 'around':
