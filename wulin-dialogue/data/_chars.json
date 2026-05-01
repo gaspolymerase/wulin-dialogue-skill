@@ -1,0 +1,398 @@
+{
+ "邢捕头": {
+  "slug": "xing_butou",
+  "count": 869
+ },
+ "佟湘玉": {
+  "slug": "tong_xiangyu",
+  "count": 7401
+ },
+ "吕秀才": {
+  "slug": "lv_xiucai",
+  "count": 3506
+ },
+ "白展堂": {
+  "slug": "bai_zhantang",
+  "count": 6624
+ },
+ "莫小贝": {
+  "slug": "mo_xiaobei",
+  "count": 2007
+ },
+ "众人": {
+  "slug": "zhongren",
+  "count": 646
+ },
+ "郭芙蓉": {
+  "slug": "guo_furong",
+  "count": 5086
+ },
+ "小青": {
+  "slug": "extra_beb7b726",
+  "count": 38
+ },
+ "李大嘴": {
+  "slug": "li_dazui",
+  "count": 3324
+ },
+ "小米": {
+  "slug": "xiaomi",
+  "count": 264
+ },
+ "燕小六": {
+  "slug": "yan_xiaoliu",
+  "count": 1734
+ },
+ "老刑": {
+  "slug": "extra_808a1122",
+  "count": 21
+ },
+ "食客甲": {
+  "slug": "extra_8f2fa102",
+  "count": 18
+ },
+ "食客乙": {
+  "slug": "extra_28032670",
+  "count": 12
+ },
+ "朱先生": {
+  "slug": "extra_8289b639",
+  "count": 41
+ },
+ "大嘴娘": {
+  "slug": "dazui_niang",
+  "count": 142
+ },
+ "慕容嫣": {
+  "slug": "murong_yan",
+  "count": 193
+ },
+ "展红绫": {
+  "slug": "zhan_hongling",
+  "count": 168
+ },
+ "路人": {
+  "slug": "extra_a6be2526",
+  "count": 14
+ },
+ "本集编剧": {
+  "slug": "extra_981fd781",
+  "count": 11
+ },
+ "蕙兰爹": {
+  "slug": "extra_75774fe2",
+  "count": 18
+ },
+ "杨蕙兰": {
+  "slug": "yang_huilan",
+  "count": 301
+ },
+ "食客": {
+  "slug": "extra_5c3c580b",
+  "count": 27
+ },
+ "女子": {
+  "slug": "extra_a37eafc7",
+  "count": 21
+ },
+ "上官云顿": {
+  "slug": "extra_11e958ad",
+  "count": 10
+ },
+ "刑": {
+  "slug": "extra_cd4603d0",
+  "count": 20
+ },
+ "姬无命": {
+  "slug": "ji_wuming",
+  "count": 186
+ },
+ "大家": {
+  "slug": "extra_f40c1277",
+  "count": 10
+ },
+ "窦先生": {
+  "slug": "dou_xiansheng",
+  "count": 157
+ },
+ "十娘": {
+  "slug": "shiniang",
+  "count": 81
+ },
+ "赛掌柜": {
+  "slug": "sai_zhanggui",
+  "count": 205
+ },
+ "小翠": {
+  "slug": "xiaocui",
+  "count": 162
+ },
+ "老罗": {
+  "slug": "extra_f917fa22",
+  "count": 19
+ },
+ "雷": {
+  "slug": "extra_65ad96da",
+  "count": 51
+ },
+ "钱掌柜": {
+  "slug": "qian_zhanggui",
+  "count": 162
+ },
+ "白眉": {
+  "slug": "baimei",
+  "count": 96
+ },
+ "范大娘": {
+  "slug": "extra_105b2001",
+  "count": 38
+ },
+ "三人": {
+  "slug": "extra_5cb556f9",
+  "count": 10
+ },
+ "陆一鸣": {
+  "slug": "lu_yiming",
+  "count": 104
+ },
+ "祝小芸": {
+  "slug": "extra_7c99cd67",
+  "count": 28
+ },
+ "周敦儒": {
+  "slug": "extra_ffdc4055",
+  "count": 36
+ },
+ "钱夫人": {
+  "slug": "qian_furen",
+  "count": 121
+ },
+ "诸葛先生": {
+  "slug": "extra_05a0de9b",
+  "count": 38
+ },
+ "侯三": {
+  "slug": "extra_dd3c11ab",
+  "count": 46
+ },
+ "导游": {
+  "slug": "extra_76a92bc2",
+  "count": 17
+ },
+ "众游客": {
+  "slug": "extra_8a644156",
+  "count": 10
+ },
+ "吴启": {
+  "slug": "extra_2de4fcb3",
+  "count": 75
+ },
+ "江": {
+  "slug": "extra_4e285c9f",
+  "count": 44
+ },
+ "一点红": {
+  "slug": "extra_daa4de98",
+  "count": 39
+ },
+ "佟父": {
+  "slug": "tongfu",
+  "count": 95
+ },
+ "焦": {
+  "slug": "extra_373368b9",
+  "count": 13
+ },
+ "佟石头": {
+  "slug": "tong_shitou",
+  "count": 242
+ },
+ "祝无双": {
+  "slug": "zhu_wushuang",
+  "count": 1536
+ },
+ "清风": {
+  "slug": "qingfeng",
+  "count": 67
+ },
+ "诸葛孔方": {
+  "slug": "zhuge_kongfang",
+  "count": 101
+ },
+ "姬无病": {
+  "slug": "extra_235a6026",
+  "count": 41
+ },
+ "邱小冬": {
+  "slug": "extra_0d211e15",
+  "count": 54
+ },
+ "老人": {
+  "slug": "extra_3d5c04c9",
+  "count": 33
+ },
+ "追风": {
+  "slug": "zhuifeng",
+  "count": 78
+ },
+ "邱小东": {
+  "slug": "extra_dd186f13",
+  "count": 20
+ },
+ "老钱": {
+  "slug": "extra_097ee9cd",
+  "count": 109
+ },
+ "莫小宝": {
+  "slug": "extra_69d6012a",
+  "count": 14
+ },
+ "门外": {
+  "slug": "extra_da7bdf24",
+  "count": 11
+ },
+ "白三娘": {
+  "slug": "bai_sanniang",
+  "count": 254
+ },
+ "公孙乌龙": {
+  "slug": "gongsun_wulong",
+  "count": 95
+ },
+ "十巴掌": {
+  "slug": "extra_0c26e61a",
+  "count": 41
+ },
+ "岳松涛": {
+  "slug": "yue_songtao",
+  "count": 60
+ },
+ "韩娟": {
+  "slug": "han_juan",
+  "count": 209
+ },
+ "老何": {
+  "slug": "extra_64a60eec",
+  "count": 28
+ },
+ "七": {
+  "slug": "extra_aad6914f",
+  "count": 34
+ },
+ "包大仁": {
+  "slug": "bao_daren",
+  "count": 386
+ },
+ "展": {
+  "slug": "extra_272c321e",
+  "count": 40
+ },
+ "米": {
+  "slug": "extra_8227e17a",
+  "count": 19
+ },
+ "刑育森": {
+  "slug": "extra_c2d94375",
+  "count": 36
+ },
+ "殷十三": {
+  "slug": "yin_shisan",
+  "count": 84
+ },
+ "展侍卫": {
+  "slug": "zhan_shiwei",
+  "count": 119
+ },
+ "谢": {
+  "slug": "extra_e2643f04",
+  "count": 53
+ },
+ "场景": {
+  "slug": "extra_c931653c",
+  "count": 14
+ },
+ "南宫": {
+  "slug": "extra_16f7b08d",
+  "count": 22
+ },
+ "南": {
+  "slug": "extra_48029ea2",
+  "count": 39
+ },
+ "恭长张": {
+  "slug": "extra_65ab7423",
+  "count": 16
+ },
+ "谢仲达": {
+  "slug": "extra_7d50df0d",
+  "count": 56
+ },
+ "豆豆": {
+  "slug": "doudou",
+  "count": 77
+ },
+ "薇": {
+  "slug": "extra_76ca69b0",
+  "count": 127
+ },
+ "命": {
+  "slug": "extra_11c1f274",
+  "count": 13
+ },
+ "郭巨侠": {
+  "slug": "guo_juxia",
+  "count": 97
+ },
+ "辛普森": {
+  "slug": "xinpusen",
+  "count": 105
+ },
+ "祝": {
+  "slug": "extra_f207ea8d",
+  "count": 45
+ },
+ "马卓子": {
+  "slug": "extra_d0967905",
+  "count": 23
+ },
+ "金湘玉": {
+  "slug": "extra_73494c0c",
+  "count": 26
+ },
+ "柳星雨": {
+  "slug": "liu_xingyu",
+  "count": 152
+ },
+ "妹": {
+  "slug": "extra_aa809807",
+  "count": 10
+ },
+ "柳月云": {
+  "slug": "extra_884907b8",
+  "count": 28
+ },
+ "谢捕头": {
+  "slug": "xie_butou",
+  "count": 115
+ },
+ "杜逍遥": {
+  "slug": "du_xiaoyao",
+  "count": 100
+ },
+ "杜娘": {
+  "slug": "extra_6543ebf2",
+  "count": 28
+ },
+ "凌腾云": {
+  "slug": "ling_tengyun",
+  "count": 113
+ },
+ "粉丝甲": {
+  "slug": "extra_fb9ec3c4",
+  "count": 11
+ },
+ "胡娇娥": {
+  "slug": "extra_69a03171",
+  "count": 37
+ }
+}

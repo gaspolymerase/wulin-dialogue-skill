@@ -1,0 +1,45 @@
+MIT License
+
+Copyright (c) 2026 wulin-dialogue contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+----------------------------------------------------------------------
+
+NOTICE / 数据版权说明
+
+The MIT license above covers ONLY the source code in this repository
+(helper.py, prepare_data.py, install.sh, SKILL.md authoring, and the JSON
+indices generated from the script).
+
+The text of the screenplay 《武林外传》(Wǔlín Wàizhuàn / "My Own Swordsman"),
+included in raw form under `武林外传全剧本/` and as derived JSON under
+`wulin-dialogue/data/`, is the intellectual property of its original
+screenwriter(s) (宁财神 et al.) and producers. It is included in this
+repository solely for personal, educational, and research use, and as a
+technical demonstration of an LLM skill that performs verbatim retrieval
+rather than generative reproduction.
+
+If you are a rights holder and wish the script data to be removed, please
+open an issue on this repository and the data will be taken down.
+
+本仓库中的《武林外传》剧本原文（位于 `武林外传全剧本/`）以及由其衍生的
+JSON 数据（位于 `wulin-dialogue/data/`），版权归原编剧（宁财神 等）和
+制作方所有。仓库收录此数据仅供个人学习、学术研究及技术演示用途。如版权方
+有异议，请提交 issue，将立即下线相关数据。
