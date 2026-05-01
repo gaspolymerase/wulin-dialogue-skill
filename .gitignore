@@ -28,3 +28,4 @@ env/
 
 # Build artifacts (the zip we ship via release, not the repo)
 *.zip
+dist/

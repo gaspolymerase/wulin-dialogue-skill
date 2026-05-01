@@ -27,21 +27,47 @@
 
 ### 安装
 
-需要本机已经装好 [Claude Code](https://docs.anthropic.com/en/docs/claude-code) 或任何支持 Skills 的 Claude 客户端。
+根据你用哪种 Claude 客户端，挑下面一种装法：
+
+#### 方法 A — Claude Code (CLI)
+
+Claude Code 直接读本地文件夹，所以一行 `install.sh` 软链接过去就行：
 
 ```bash
-git clone https://github.com/<your-username>/wulin-dialogue.git
-cd wulin-dialogue
+git clone https://github.com/gaspolymerase/wulin-dialogue-skill.git
+cd wulin-dialogue-skill
 ./install.sh
 ```
 
-`install.sh` 会把 `wulin-dialogue/` 整个软链接到 `~/.claude/skills/wulin-dialogue/`。装好后在任意 Claude Code 会话里输入：
+脚本会把 `wulin-dialogue/` 整个软链接到 `~/.claude/skills/wulin-dialogue/`（之后你在 repo 里改 `SKILL.md` 或 `helper.py`，Claude Code 立即生效，不用重装）。
+
+装好后在任意 Claude Code 会话里输入：
 
 ```
 /wulin-dialogue
 ```
 
-或者直接说"我想和佟湘玉聊聊"、"咱们对个台词"，Claude 也会自动加载这个 skill。
+或者直接说"我想和佟湘玉聊聊"、"咱们对个台词"，Claude 也会自动加载。
+
+#### 方法 B — Claude 桌面端 / 网页版 (claude.ai)
+
+桌面端和网页版只能上传 zip，所以先打个包：
+
+```bash
+git clone https://github.com/gaspolymerase/wulin-dialogue-skill.git
+cd wulin-dialogue-skill
+./scripts/build_zip.sh        # 生成 dist/wulin-dialogue.zip（约 3.8 MB）
+```
+
+然后在 Claude 客户端里：
+
+1. 打开 **Settings → Customize → Skills**
+2. 点右上角 **`+`** → **Create skill**
+3. 把刚生成的 `dist/wulin-dialogue.zip` 拖进去（或选择文件上传）
+4. 等 Claude 提示 skill 已就绪即可在对话里使用
+
+> 没装 git 也行——可以从 GitHub 仓库右上角 **Code → Download ZIP** 下载整个仓库，解压后跑 `./scripts/build_zip.sh`。  
+> 或者直接到本仓库的 [Releases](https://github.com/gaspolymerase/wulin-dialogue-skill/releases) 页面下载预打包好的 `wulin-dialogue.zip`（如有）。
 
 > 不想装也行——直接把 `SKILL.md` 的内容贴给任何会调用本地 Python 和读 JSON 的 LLM agent，都能跑。
 
@@ -74,7 +100,8 @@ wulin-dialogue/                  ← repo 根目录
 │       ├── _chars.json          ← 中文名 ↔ 拼音 文件名映射
 │       └── <pinyin>.json        ← 每个主要角色一份
 ├── scripts/
-│   └── prepare_data.py          ← 从原始 txt 重新生成 data/
+│   ├── prepare_data.py          ← 从原始 txt 重新生成 data/
+│   └── build_zip.sh             ← 打包成 zip 给桌面端/网页端上传
 ├── 武林外传全剧本/              ← 原始剧本（GB18030 txt）
 ├── install.sh                   ← 一键软链接到 ~/.claude/skills/
 ├── uninstall.sh
@@ -131,21 +158,46 @@ Two modes:
 
 ### Install
 
-You need [Claude Code](https://docs.anthropic.com/en/docs/claude-code) or any Claude client that supports Skills.
+Pick the path that matches your Claude client:
+
+#### Option A — Claude Code (CLI)
+
+Claude Code reads skills straight from disk, so a one-line symlink does it:
 
 ```bash
-git clone https://github.com/<your-username>/wulin-dialogue.git
-cd wulin-dialogue
+git clone https://github.com/gaspolymerase/wulin-dialogue-skill.git
+cd wulin-dialogue-skill
 ./install.sh
 ```
 
-This symlinks `wulin-dialogue/` into `~/.claude/skills/wulin-dialogue/`. Then in Claude Code:
+This symlinks `wulin-dialogue/` into `~/.claude/skills/wulin-dialogue/`. Edits in the repo are picked up immediately — no reinstall needed.
+
+In any Claude Code session:
 
 ```
 /wulin-dialogue
 ```
 
 Or just say "I want to chat with 佟湘玉" / "let's play finish-the-line" and Claude will load it.
+
+#### Option B — Claude Desktop app / Claude.ai web
+
+The desktop and web clients only accept zip uploads, so build a zip first:
+
+```bash
+git clone https://github.com/gaspolymerase/wulin-dialogue-skill.git
+cd wulin-dialogue-skill
+./scripts/build_zip.sh        # writes dist/wulin-dialogue.zip (~3.8 MB)
+```
+
+Then in the Claude client:
+
+1. Open **Settings → Customize → Skills**
+2. Top-right **`+`** → **Create skill**
+3. Drop `dist/wulin-dialogue.zip` in (or use the file picker)
+4. Wait for Claude to confirm the skill is ready, then start a chat
+
+> No git? Use **Code → Download ZIP** on the repo page, unzip, then run `./scripts/build_zip.sh`. Or grab a prebuilt `wulin-dialogue.zip` from [Releases](https://github.com/gaspolymerase/wulin-dialogue-skill/releases) when available.
 
 ### Project layout
 
@@ -155,7 +207,9 @@ wulin-dialogue/                  ← repo root
 │   ├── SKILL.md
 │   ├── helper.py
 │   └── data/
-├── scripts/prepare_data.py      ← rebuild data/ from the raw txt
+├── scripts/
+│   ├── prepare_data.py          ← rebuild data/ from the raw txt
+│   └── build_zip.sh             ← package into a zip for Desktop/web upload
 ├── 武林外传全剧本/              ← raw script (GB18030)
 ├── install.sh / uninstall.sh
 ├── LICENSE
