@@ -1,37 +1,23 @@
-# 武林外传台词互动 · Wulin-dialogue Skill
+# wulin-dialogue
 
-> 一个 [Claude Code](https://claude.com/claude-code) / [Claude Agent SDK](https://docs.anthropic.com/en/docs/claude-code/skills) skill：让 Claude 用《武林外传》全八十一回原剧台词跟你对话，或者跟你"对台词"接龙。
->
-> A Claude Code skill that lets Claude chat with you using only original lines from the Chinese sitcom *Wǔlín Wàizhuàn (武林外传)* — all 81 episodes — or play a "finish-the-line" game with you across the entire script.
+一个 Claude skill：让 Claude 用《武林外传》全 81 回原剧台词跟你对话，或者陪你"对台词"接龙。所有回复都是从 39,847 句原剧台词里检索出来的——**不是 LLM 生成的，没有改写、没有拼接**。
 
-[简体中文](#-简体中文) · [English](#-english)
+A Claude skill that chats with you using only verbatim lines from all 81 episodes of the Chinese sitcom *Wǔlín Wàizhuàn (武林外传)*. Every reply is retrieved from a 39,847-line script index — nothing is generated, paraphrased, or stitched together.
 
 ---
 
-## 🀄 简体中文
+## 中文
 
-### 这是什么？
+### 两种玩法
 
-一个把"和武林外传角色聊天"做成 Claude skill 的小项目。所有的回复都来自原剧台词库，**不是 LLM 生成的、不是模仿语气编造的**——Claude 只负责"在七万多句台词里挑一句最贴切的回给你"。
-
-两种玩法：
-
-- **聊天模式**：选一个角色（佟湘玉、白展堂、吕秀才、郭芙蓉、李大嘴、莫小贝、燕小六、祝无双、邢捕头、众人……近百位有 ≥10 句台词的角色都行），然后你说什么，"他/她"就用原剧台词回你什么。语义不一定百分百对得上，但那种"歪打正着"的喜感正是好玩的地方。
-- **对台词模式**：你随便念一句剧里的台词（哪怕记得不太准，模糊匹配也能搜到），Claude 给你接下一句，可以一直接龙下去。
-
-### 数据
-
-- 收录：《武林外传》全 81 回剧本，约 39,847 句对白。
-- 角色：97 位有 ≥10 句台词的角色，包括所有主角、常驻配角、客串。
-- 来源：网络流传的剧本文字版（GB18030 编码原始 txt 已收录在 `武林外传全剧本/` 下，方便复现数据流程）。`武林外传全剧本/` 里那三个 txt 只是把全部 81 回随机切成了三份方便存放，**不对应播出时的三季**。
+- **聊天模式**：选一个角色（佟湘玉、白展堂、吕秀才、郭芙蓉、李大嘴、莫小贝、燕小六、祝无双……共约 97 位有 ≥10 句台词的角色），你说什么，"他/她"就用原剧台词回你什么。
+- **对台词模式**：你随便念一句剧里的台词（记不准也没关系，模糊匹配），Claude 给你接下一句，可以一直接龙下去。
 
 ### 安装
 
-根据你用哪种 Claude 客户端，挑下面一种装法：
+#### 方法 A — Claude Code（CLI）
 
-#### 方法 A — Claude Code (CLI)
-
-Claude Code 直接读本地文件夹，所以一行 `install.sh` 软链接过去就行：
+Claude Code 直接读本地文件夹：
 
 ```bash
 git clone https://github.com/gaspolymerase/wulin-dialogue-skill.git
@@ -39,37 +25,20 @@ cd wulin-dialogue-skill
 ./install.sh
 ```
 
-脚本会把 `wulin-dialogue/` 整个软链接到 `~/.claude/skills/wulin-dialogue/`（之后你在 repo 里改 `SKILL.md` 或 `helper.py`，Claude Code 立即生效，不用重装）。
+`install.sh` 会把 `wulin-dialogue/` 软链接到 `~/.claude/skills/wulin-dialogue/`。
 
-装好后在任意 Claude Code 会话里输入：
+之后在任意 Claude Code 会话里输入 `/wulin-dialogue`，或者直接说"我想和佟湘玉聊聊"、"咱们对个台词"，Claude 都会自动加载。
 
-```
-/wulin-dialogue
-```
+#### 方法 B — Claude 桌面端 / 网页版（claude.ai）
 
-或者直接说"我想和佟湘玉聊聊"、"咱们对个台词"，Claude 也会自动加载。
+桌面端和网页版只能上传 zip。
 
-#### 方法 B — Claude 桌面端 / 网页版 (claude.ai)
+1. 从 [Releases](https://github.com/gaspolymerase/wulin-dialogue-skill/releases/latest) 下载 `wulin-dialogue.zip`（约 3.8 MB）。
+2. 打开 Claude 客户端 → **Settings → Customize → Skills**。
+3. 点右上角 **`+` → Create skill**，把 zip 拖进去上传。
+4. 上传完成后开始对话即可。
 
-桌面端和网页版只能上传 zip，所以先打个包：
-
-```bash
-git clone https://github.com/gaspolymerase/wulin-dialogue-skill.git
-cd wulin-dialogue-skill
-./scripts/build_zip.sh        # 生成 dist/wulin-dialogue.zip（约 3.8 MB）
-```
-
-然后在 Claude 客户端里：
-
-1. 打开 **Settings → Customize → Skills**
-2. 点右上角 **`+`** → **Create skill**
-3. 把刚生成的 `dist/wulin-dialogue.zip` 拖进去（或选择文件上传）
-4. 等 Claude 提示 skill 已就绪即可在对话里使用
-
-> 没装 git 也行——可以从 GitHub 仓库右上角 **Code → Download ZIP** 下载整个仓库，解压后跑 `./scripts/build_zip.sh`。  
-> 或者直接到本仓库的 [Releases](https://github.com/gaspolymerase/wulin-dialogue-skill/releases) 页面下载预打包好的 `wulin-dialogue.zip`（如有）。
-
-> 不想装也行——直接把 `SKILL.md` 的内容贴给任何会调用本地 Python 和读 JSON 的 LLM agent，都能跑。
+> 想自己改完再上传，可以 clone 仓库后跑 `./scripts/build_zip.sh` 重新打包。
 
 ### 使用示例
 
@@ -88,81 +57,54 @@ Claude：白展堂：你信不信我对你使葵花点穴手
        白展堂：(指)定！
 ```
 
-### 项目结构
+### 数据来源
 
-```
-wulin-dialogue/                  ← repo 根目录
-├── wulin-dialogue/              ← 实际安装的 skill 目录
-│   ├── SKILL.md                 ← skill 入口与行为说明
-│   ├── helper.py                ← 检索/搜索 CLI
-│   └── data/
-│       ├── _all.json            ← 全剧台词扁平索引（39,847 条）
-│       ├── _chars.json          ← 中文名 ↔ 拼音 文件名映射
-│       └── <pinyin>.json        ← 每个主要角色一份
-├── scripts/
-│   ├── prepare_data.py          ← 从原始 txt 重新生成 data/
-│   └── build_zip.sh             ← 打包成 zip 给桌面端/网页端上传
-├── 武林外传全剧本/              ← 原始剧本（GB18030 txt）
-├── install.sh                   ← 一键软链接到 ~/.claude/skills/
-├── uninstall.sh
-├── LICENSE
-└── README.md
-```
+剧本文字版来自网络流传版本，编码为 GB18030，已收录在 `武林外传全剧本/` 下方便复现数据流程。**那三个 .txt 只是把全部 81 回随机切成了三份方便存放，不对应播出时的三季。**
 
-### 自己动手扩数据
-
-如果你想加一位 skill 还没单独建文件的小配角，或者发现台词归类有误，可以改完原始 txt 之后跑：
+要重建数据：
 
 ```bash
 python3 scripts/prepare_data.py
 ```
 
-会重建 `wulin-dialogue/data/` 下的全部 JSON。
+### 项目结构
 
-### `helper.py` 命令速查
-
-| 命令 | 用途 |
-| --- | --- |
-| `helper.py chars` | 列出所有角色和台词数（按数量排序） |
-| `helper.py find "<text>" [n]` | 在全剧搜某句话，分 EXACT/SUBSTR/FUZZY 三档返回（默认 20 条） |
-| `helper.py next <idx> [n]` | 从某句开始往后看 n 条 |
-| `helper.py around <idx> [n]` | 看某句前后各 n 条上下文 |
-| `helper.py char <name> [keyword]` | 列出某角色全部台词（可加关键词过滤） |
-| `helper.py sample <name> <keyword>` | 列出某角色含关键词的台词 + 上下文 |
-
-角色名可以用中文（"佟湘玉"）也可以用拼音 slug（"tong_xiangyu"）。
+```
+wulin-dialogue-skill/
+├── wulin-dialogue/              实际安装的 skill 目录
+│   ├── SKILL.md                 skill 行为说明
+│   ├── helper.py                检索 CLI
+│   └── data/
+│       ├── _all.json            全剧台词扁平索引（39,847 条）
+│       ├── _chars.json          中文名 ↔ 拼音 文件名映射
+│       └── <pinyin>.json        每个主要角色一份
+├── scripts/
+│   ├── prepare_data.py          从原始 txt 重建 data/
+│   └── build_zip.sh             打包 zip 给桌面端/网页端上传
+├── 武林外传全剧本/              原始剧本（GB18030 txt）
+├── install.sh / uninstall.sh    Claude Code 软链接安装
+├── LICENSE
+└── README.md
+```
 
 ### License
 
-- 代码：MIT。
-- 剧本台词：版权归原作者（编剧 宁财神 等）和制作方所有。本仓库收录原始剧本文字版仅供学术研究、个人学习与技术 demo 使用。如版权方有异议请提 issue，会立即下线相应数据。
+代码采用 MIT 协议。剧本台词版权归原作者（编剧 宁财神 等）和制作方所有；本仓库收录仅供个人学习、学术研究和技术演示。如版权方有异议请提 issue，将立即下线。
 
 ---
 
-## 🌐 English
+## English
 
-### What is this?
+### Two modes
 
-A small Claude skill that lets you chat with characters from the classic Chinese sitcom **武林外传 (Wǔlín Wàizhuàn / *My Own Swordsman*)** — but every reply Claude gives is **a verbatim line from the original script**, not LLM-generated text. Claude's job is just to pick the most fitting line out of 39,847 lines of dialogue.
-
-Two modes:
-
-- **Chat mode** — Pick a character (any of ~97 characters with ≥10 lines), and Claude replies in their voice using only their actual lines from the show. Semantic match isn't always perfect — but that "almost right but hilariously off" vibe is the whole point.
-- **Finish-the-line mode** — Quote a line from the show (fuzzy matching tolerates misremembered words, dropped characters, scrambled order), and Claude continues with the next line. Keeps going as long as you do.
-
-### Data
-
-- All 81 episodes, ~39,847 lines of dialogue.
-- 97 characters with ≥10 lines (mains, recurring side characters, guest stars).
-- Source: a publicly circulating GB18030 text version of the script, included under `武林外传全剧本/` for reproducibility. The three `.txt` files inside that folder are just an arbitrary split of the 81 episodes for storage — they do **not** correspond to the show's three broadcast seasons.
+- **Chat mode** — Pick a character (any of ~97 with ≥10 lines: 佟湘玉, 白展堂, 吕秀才, 郭芙蓉, 李大嘴, 莫小贝, 燕小六, 祝无双, …). Whatever you say, Claude replies with one of their actual lines from the show.
+- **Finish-the-line mode** — Quote a line you remember (fuzzy match tolerates dropped/wrong characters). Claude continues with the next line, and the next, as long as you keep going.
 
 ### Install
 
-Pick the path that matches your Claude client:
-
 #### Option A — Claude Code (CLI)
 
-Claude Code reads skills straight from disk, so a one-line symlink does it:
+Claude Code reads skills straight from disk:
 
 ```bash
 git clone https://github.com/gaspolymerase/wulin-dialogue-skill.git
@@ -170,59 +112,35 @@ cd wulin-dialogue-skill
 ./install.sh
 ```
 
-This symlinks `wulin-dialogue/` into `~/.claude/skills/wulin-dialogue/`. Edits in the repo are picked up immediately — no reinstall needed.
+This symlinks `wulin-dialogue/` into `~/.claude/skills/wulin-dialogue/`.
 
-In any Claude Code session:
-
-```
-/wulin-dialogue
-```
-
-Or just say "I want to chat with 佟湘玉" / "let's play finish-the-line" and Claude will load it.
+In any Claude Code session, type `/wulin-dialogue` or just say "let's play finish-the-line" / "chat as 佟湘玉".
 
 #### Option B — Claude Desktop app / Claude.ai web
 
-The desktop and web clients only accept zip uploads, so build a zip first:
+The GUI clients only accept zip uploads.
+
+1. Download `wulin-dialogue.zip` (~3.8 MB) from the [latest release](https://github.com/gaspolymerase/wulin-dialogue-skill/releases/latest).
+2. Open Claude → **Settings → Customize → Skills**.
+3. Click the top-right **`+` → Create skill** and drop the zip in.
+4. Wait for the upload to finish, then start a chat.
+
+> To customize the skill before uploading, clone the repo and run `./scripts/build_zip.sh` to repackage.
+
+### Data
+
+The script text comes from a publicly circulating GB18030 version, included under `武林外传全剧本/` for reproducibility. The three `.txt` files there are an arbitrary storage split of all 81 episodes — they do **not** correspond to the show's three broadcast seasons.
+
+Rebuild from source:
 
 ```bash
-git clone https://github.com/gaspolymerase/wulin-dialogue-skill.git
-cd wulin-dialogue-skill
-./scripts/build_zip.sh        # writes dist/wulin-dialogue.zip (~3.8 MB)
-```
-
-Then in the Claude client:
-
-1. Open **Settings → Customize → Skills**
-2. Top-right **`+`** → **Create skill**
-3. Drop `dist/wulin-dialogue.zip` in (or use the file picker)
-4. Wait for Claude to confirm the skill is ready, then start a chat
-
-> No git? Use **Code → Download ZIP** on the repo page, unzip, then run `./scripts/build_zip.sh`. Or grab a prebuilt `wulin-dialogue.zip` from [Releases](https://github.com/gaspolymerase/wulin-dialogue-skill/releases) when available.
-
-### Project layout
-
-```
-wulin-dialogue/                  ← repo root
-├── wulin-dialogue/              ← the skill that gets installed
-│   ├── SKILL.md
-│   ├── helper.py
-│   └── data/
-├── scripts/
-│   ├── prepare_data.py          ← rebuild data/ from the raw txt
-│   └── build_zip.sh             ← package into a zip for Desktop/web upload
-├── 武林外传全剧本/              ← raw script (GB18030)
-├── install.sh / uninstall.sh
-├── LICENSE
-└── README.md
+python3 scripts/prepare_data.py
 ```
 
 ### License
 
-- Code: MIT.
-- Script dialogue: copyright belongs to the original author(s) (screenwriter 宁财神 et al.) and producers. Included here for personal/educational use and as a tech demo. Will be removed promptly on rights-holder request.
+Code: MIT. Script dialogue: copyright belongs to the original screenwriter(s) (宁财神 et al.) and producers. Included here for personal/educational use only and removed promptly on rights-holder request.
 
 ### Credits
 
-- Original screenplay: 宁财神 et al.
-- Skill design & implementation: this repo's contributors.
-- Built for the [Claude Code skill](https://docs.anthropic.com/en/docs/claude-code/skills) ecosystem.
+Original screenplay: 宁财神 et al. Built for the [Claude Code skill](https://docs.anthropic.com/en/docs/claude-code/skills) ecosystem.
