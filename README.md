@@ -1,8 +1,8 @@
 # 武林外传台词互动 · Wulin-dialogue Skill
 
-> 一个 [Claude Code](https://claude.com/claude-code) / [Claude Agent SDK](https://docs.anthropic.com/en/docs/claude-code/skills) skill：让 Claude 用《武林外传》全三季原剧台词跟你对话，或者跟你"对台词"接龙。
+> 一个 [Claude Code](https://claude.com/claude-code) / [Claude Agent SDK](https://docs.anthropic.com/en/docs/claude-code/skills) skill：让 Claude 用《武林外传》全八十一回原剧台词跟你对话，或者跟你"对台词"接龙。
 >
-> A Claude Code skill that lets Claude chat with you using only original lines from the Chinese sitcom *Wǔlín Wàizhuàn (武林外传)*, or play a "finish-the-line" game with you across the entire script.
+> A Claude Code skill that lets Claude chat with you using only original lines from the Chinese sitcom *Wǔlín Wàizhuàn (武林外传)* — all 81 episodes — or play a "finish-the-line" game with you across the entire script.
 
 [简体中文](#-简体中文) · [English](#-english)
 
@@ -21,9 +21,9 @@
 
 ### 数据
 
-- 收录：《武林外传》全三季 81 回剧本，约 39,847 句对白。
+- 收录：《武林外传》全 81 回剧本，约 39,847 句对白。
 - 角色：97 位有 ≥10 句台词的角色，包括所有主角、常驻配角、客串。
-- 来源：网络流传的剧本文字版（GB18030 编码原始 txt 已收录在 `武林外传全剧本/` 下，方便复现数据流程）。
+- 来源：网络流传的剧本文字版（GB18030 编码原始 txt 已收录在 `武林外传全剧本/` 下，方便复现数据流程）。`武林外传全剧本/` 里那三个 txt 只是把全部 81 回随机切成了三份方便存放，**不对应播出时的三季**。
 
 ### 安装
 
@@ -125,9 +125,9 @@ Two modes:
 
 ### Data
 
-- 81 episodes across all 3 seasons, ~39,847 lines of dialogue.
+- All 81 episodes, ~39,847 lines of dialogue.
 - 97 characters with ≥10 lines (mains, recurring side characters, guest stars).
-- Source: a publicly circulating GB18030 text version of the script, included under `武林外传全剧本/` for reproducibility.
+- Source: a publicly circulating GB18030 text version of the script, included under `武林外传全剧本/` for reproducibility. The three `.txt` files inside that folder are just an arbitrary split of the 81 episodes for storage — they do **not** correspond to the show's three broadcast seasons.
 
 ### Install
 
