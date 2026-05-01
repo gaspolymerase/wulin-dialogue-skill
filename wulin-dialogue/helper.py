@@ -5,6 +5,12 @@ Usage:
   helper.py chars                       List characters and line counts.
   helper.py find "<text>"               Find lines whose text contains/matches <text>.
                                         Returns up to 20 candidates with index, char, text, next-line.
+  helper.py oracle "<prompt>" [seed]    "Book of Answers" mode. Pick ONE line from
+                                        the entire script as a fortune-style reply
+                                        to the prompt. Weighted random over a
+                                        relevance-scored pool, so repeated calls
+                                        give variety. Pass an integer seed for a
+                                        reproducible pick.
   helper.py next <idx> [n]              Show line at idx and next n lines (default n=3).
   helper.py around <idx> [n]            Show n lines before and after idx (default n=3).
   helper.py char <name> [keyword]       Dump lines for character; optional keyword filter.
@@ -12,7 +18,7 @@ Usage:
   helper.py sample <name> <keyword>     Sample lines containing keyword for given character,
                                         with prev/next context.
 """
-import json, sys, os, re
+import json, sys, os, re, random, math
 
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
 
@@ -64,11 +70,15 @@ def list_chars():
 def normalize(s):
     return re.sub(r'[\s　，。！？、,.!?…~～\-—\"\'`()（）《》]+', '', s)
 
-def find(text, limit=20):
+def _search(text):
+    """Categorize matches against `text`. Returns (exact, sub, fuzzy_with_scores).
+    `exact` and `sub` are lists of entry dicts; `fuzzy_with_scores` is a list of
+    (score, entry) tuples sorted by descending score.
+    """
     all_ = load_all()
     nt = normalize(text)
     if not nt:
-        return
+        return [], [], []
     exact, sub, fuzzy = [], [], []
     char_set = set(nt)
     for e in all_:
@@ -83,36 +93,78 @@ def find(text, limit=20):
             sub.append(e)
         else:
             # fuzzy: bigram overlap + char-level Jaccard
-            score = 0
             if len(nt) >= 3 and len(et) >= 3:
                 bg1 = set(nt[i:i+2] for i in range(len(nt)-1))
                 bg2 = set(et[i:i+2] for i in range(len(et)-1))
                 bg_inter = len(bg1 & bg2)
-                bg_union = len(bg1 | bg2) or 1
-                bg_jacc = bg_inter / bg_union
-                # char-level overlap (lenient)
                 cs = set(et)
                 ch_inter = len(char_set & cs)
                 ch_min = min(len(char_set), len(cs)) or 1
                 ch_ratio = ch_inter / ch_min
-                # combined score
                 score = bg_inter * 2 + ch_inter
-                # accept if either: ≥2 shared bigrams, OR char overlap ≥60% with ≥3 shared chars
                 if bg_inter >= 2 or (ch_ratio >= 0.6 and ch_inter >= 3):
                     fuzzy.append((score, e))
             elif len(nt) >= 2 and len(et) >= 2:
-                # short queries: rely on char overlap
                 cs = set(et)
                 ch_inter = len(char_set & cs)
                 if ch_inter >= 2 and ch_inter / (min(len(char_set), len(cs)) or 1) >= 0.6:
                     fuzzy.append((ch_inter, e))
     fuzzy.sort(key=lambda x: -x[0])
-    fuzzy = [e for _, e in fuzzy]
+    return exact, sub, fuzzy
+
+
+def find(text, limit=20):
+    exact, sub, fuzzy_scored = _search(text)
+    fuzzy = [e for _, e in fuzzy_scored]
     pool = exact + sub + fuzzy
     print(f'EXACT={len(exact)}  SUBSTR={len(sub)}  FUZZY={len(fuzzy)}')
     for e in pool[:limit]:
         np = e.get('np') or '(末尾)'
         print(f"[{e['i']}] {e['c']}：{e['t']}  →  {np}")
+
+
+# Lines this short are usually filler ("啊", "嗯", "对") — exclude from oracle picks.
+ORACLE_MIN_LEN = 5
+# Cap pool size; relevance plummets after the top ~50 fuzzy hits.
+ORACLE_POOL_CAP = 60
+
+
+def oracle(prompt, seed=None):
+    """Pick ONE line from the entire script as a 'book of answers' reply.
+
+    Scoring per candidate: relevance × length-boost × tier-weight.
+    - tier-weight: EXACT=8, SUBSTR=5, FUZZY=fuzzy_score_normalized
+    - length-boost: log10(len)+1, so 30-char金句 beats 5-char短句 ~2×
+    Then pick by weighted random so the same prompt gives variety on re-asks.
+    """
+    rng = random.Random(seed)
+    exact, sub, fuzzy_scored = _search(prompt)
+
+    candidates = []  # list of (weight, entry)
+    for e in exact:
+        if len(e['t']) >= ORACLE_MIN_LEN:
+            candidates.append((8.0 * (math.log10(len(e['t'])) + 1), e))
+    for e in sub:
+        if len(e['t']) >= ORACLE_MIN_LEN:
+            candidates.append((5.0 * (math.log10(len(e['t'])) + 1), e))
+    if fuzzy_scored:
+        max_fz = max(s for s, _ in fuzzy_scored) or 1
+        for score, e in fuzzy_scored[:ORACLE_POOL_CAP]:
+            if len(e['t']) >= ORACLE_MIN_LEN:
+                norm = score / max_fz  # 0..1
+                candidates.append((norm * (math.log10(len(e['t'])) + 1), e))
+
+    if not candidates:
+        # No semantic match at all — fall back to a uniformly random金句-length line
+        # from the whole corpus, so the oracle never refuses to answer.
+        all_ = load_all()
+        long_lines = [e for e in all_ if 12 <= len(e['t']) <= 80]
+        chosen = rng.choice(long_lines) if long_lines else rng.choice(all_)
+    else:
+        weights = [w for w, _ in candidates]
+        chosen = rng.choices([e for _, e in candidates], weights=weights, k=1)[0]
+
+    print(f"[{chosen['i']}] {chosen['c']}：{chosen['t']}")
 
 def show_next(idx, n=3):
     all_ = load_all()
@@ -157,6 +209,9 @@ def main():
         list_chars()
     elif cmd == 'find':
         find(sys.argv[2], int(sys.argv[3]) if len(sys.argv) > 3 else 20)
+    elif cmd == 'oracle':
+        seed = int(sys.argv[3]) if len(sys.argv) > 3 else None
+        oracle(sys.argv[2], seed)
     elif cmd == 'next':
         show_next(sys.argv[2], int(sys.argv[3]) if len(sys.argv) > 3 else 3)
     elif cmd == 'around':
