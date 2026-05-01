@@ -4,7 +4,7 @@
 Usage:
   python3 scripts/prepare_data.py                  # write into wulin-dialogue/data/
   python3 scripts/prepare_data.py --out ./newdata  # write somewhere else (safer)
-  python3 scripts/prepare_data.py --min-lines 5    # include characters with ≥5 lines
+  python3 scripts/prepare_data.py --min-lines 1    # include every named character
 
 This is a reference implementation for how the bundled JSON dataset was built
 from the raw script. The bundled `wulin-dialogue/data/` is the authoritative
@@ -57,11 +57,16 @@ ALIASES: dict[str, str] = {
 # Generated slugs use a simple pinyin transliteration if `pypinyin` is
 # available; otherwise we fall back to the manual map below for known names.
 SLUG_OVERRIDES: dict[str, str] = {
+    # Main cast — pinyin overrides where the auto-generated slug would be ambiguous,
+    # ugly, or differ from what's already shipped.
     "佟湘玉": "tong_xiangyu", "白展堂": "bai_zhantang", "吕秀才": "lv_xiucai",
     "郭芙蓉": "guo_furong", "李大嘴": "li_dazui", "莫小贝": "mo_xiaobei",
     "燕小六": "yan_xiaoliu", "祝无双": "zhu_wushuang", "邢捕头": "xing_butou",
     "众人": "zhongren", "包大仁": "bao_daren", "杨蕙兰": "yang_huilan",
-    # extend as needed; unknown names get an auto-slug
+    # Disambiguation for similar names that would otherwise collide
+    "莫小宝": "mo_xiaobao",
+    "金湘玉": "jin_xiangyu",
+    "假老白": "jia_laobai", "真老白": "zhen_laobai", "黑衣老邢": "heiyi_laoxing",
 }
 
 
@@ -70,10 +75,12 @@ def to_slug(name: str) -> str:
         return SLUG_OVERRIDES[name]
     try:
         from pypinyin import lazy_pinyin  # type: ignore
-        return "_".join(lazy_pinyin(name))
     except ImportError:
-        # Fallback: replace each char with its hex codepoint. Ugly but unique.
-        return "char_" + "_".join(f"{ord(c):x}" for c in name)
+        sys.exit("pypinyin is required for slug generation. install with: pip install pypinyin")
+    parts = lazy_pinyin(name)
+    s = "_".join(p for p in parts if p)
+    s = re.sub(r"[^a-z0-9_]", "", s.lower())
+    return s or "unknown"
 
 
 def parse_scripts() -> list[dict]:
@@ -147,7 +154,7 @@ def build_outputs(entries: list[dict], min_lines: int) -> tuple[list[dict], dict
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--out", type=Path, default=DEFAULT_OUT, help=f"output directory (default: {DEFAULT_OUT})")
-    ap.add_argument("--min-lines", type=int, default=10, help="characters with fewer lines are dropped (default 10)")
+    ap.add_argument("--min-lines", type=int, default=5, help="characters with fewer lines are dropped (default 5)")
     args = ap.parse_args()
 
     entries = parse_scripts()

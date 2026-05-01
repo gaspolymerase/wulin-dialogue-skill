@@ -10,7 +10,7 @@ A Claude skill that chats with you using only verbatim lines from all 81 episode
 
 ### 三种玩法
 
-- **聊天模式**：选一个角色（佟湘玉、白展堂、吕秀才、郭芙蓉、李大嘴、莫小贝、燕小六、祝无双……共约 97 位有 ≥10 句台词的角色），你说什么，"他/她"就用原剧台词回你什么。
+- **聊天模式**：选一个角色（佟湘玉、白展堂、吕秀才、郭芙蓉、李大嘴、莫小贝、燕小六、祝无双……共 125+ 位有 ≥5 句台词的角色，主角到客串都齐了），你说什么，"他/她"就用原剧台词回你什么。
 - **对台词模式**：你随便念一句剧里的台词（记不准也没关系，模糊匹配），Claude 给你接下一句，可以一直接龙下去。
 - **答案之书**：随便说一句话/问题/心情（不一定是剧里的），Claude 从全剧 39,847 句台词里挑一句最贴的回你。同一个问题再问会得到不同的"签"。
 
@@ -98,7 +98,7 @@ wulin-dialogue-skill/
 
 ### Three modes
 
-- **Chat mode** — Pick a character (any of ~97 with ≥10 lines: 佟湘玉, 白展堂, 吕秀才, 郭芙蓉, 李大嘴, 莫小贝, 燕小六, 祝无双, …). Whatever you say, Claude replies with one of their actual lines from the show.
+- **Chat mode** — Pick a character (125+ with ≥5 lines: 佟湘玉, 白展堂, 吕秀才, 郭芙蓉, 李大嘴, 莫小贝, 燕小六, 祝无双, plus the long tail of side characters and walk-ons). Whatever you say, Claude replies with one of their actual lines from the show.
 - **Finish-the-line mode** — Quote a line you remember (fuzzy match tolerates dropped/wrong characters). Claude continues with the next line, and the next, as long as you keep going.
 - **Book of Answers (答案之书)** — Say anything (a question, a feeling, a complaint — doesn't have to be a script line). Claude picks one line from across the full 39,847-line script as a fortune-style reply. Ask the same thing twice, get a different "draw."
 
